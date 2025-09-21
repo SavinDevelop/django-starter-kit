@@ -1,0 +1,36 @@
+services:
+
+  postgres:
+    image: "postgres:17-alpine"
+    container_name: postgres-django
+    restart: always
+
+    environment:
+      POSTGRES_DB: django
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - "pg:/var/lib/postgresql/data"
+
+  redis:
+    image: "redis:8-alpine"
+    container_name: redis-django
+    restart: always
+
+    environment:
+      REDIS_PASSWORD: admin
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+      - "redis:/data"
+
+
+volumes:
+  pg:
+  redis:

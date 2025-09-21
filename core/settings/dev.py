@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core'
+
+    'core',
+
+    'django_cotton.apps.SimpleAppConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -56,15 +60,21 @@ MIDDLEWARE = [
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        'DIRS': [BASE_DIR / "templates"],
+        'APP_DIRS': False,
+         "OPTIONS": {
+            "loaders": [(
+                "django.template.loaders.cached.Loader",
+                [
+                    "django_cotton.cotton_loader.Loader",
+                    "django.template.loaders.filesystem.Loader",
+                    "django.template.loaders.app_directories.Loader",
+                ],
+            )],
+            "builtins": [
+                "django_cotton.templatetags.cotton"
             ],
-        },
+        }
     },
 ]
 

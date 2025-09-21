@@ -11,11 +11,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from split_settings.tools import include
+from dotenv import load_dotenv
+from pathlib import Path
+import os
 
 include("base.py")
 
-from pathlib import Path
-import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # Quick-start development settings - unsuitable for production
@@ -73,7 +74,7 @@ TEMPLATES = [
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-from dotenv import load_dotenv
+
 
 load_dotenv(BASE_DIR / ".env")
 
@@ -88,9 +89,19 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": os.getenv("REDIS_ENGINE"),
+        "LOCATION": os.getenv("REDIS_HOST"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PASSWORD": os.getenv('REDIS_PASSWORD')
+        }
+    }
+}
 
-
-
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
 
 
 
